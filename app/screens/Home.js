@@ -22,7 +22,8 @@ class Home extends Component {
     rates: {
       rates: {}
     },
-    results: [],
+    res: 23.65,
+    quoteRates: [],
     date: null,
     text: null,
     selected: 'RWF',
@@ -53,36 +54,27 @@ class Home extends Component {
   };
 
   convertCurrency = (base) => {
-    console.log(base)
     const { rates } = this.state.rates
     quoteRates = [];
-    if (this.state.rates) {
+    if (this.state.text && this.state.rates) {
       Object.keys(rates).forEach((quote) => {
-        quoteRates.push((rates[quote] / rates[base]))
+        quoteRates.push((rates[quote] / rates[base]) * this.state.text)
       })
-      let res = []
-      {
-        this.state.text &&
-          quoteRates.map((quoteRate) => {
-            res.push(quoteRate * this.state.text)
-          })
-        this.setState({ results: res })
-        console.log(this.state.text)
-        console.log(this.state.results)
-      }
-      // console.log(quoteRates)
+      this.setState({ quoteRates })
     }
   };
-
-  changeBaseCurrency = (base) => {
-    this.setState({ selected: base })
-  }
 
   render() {
     let tasks = {
       name: Platform.OS === 'ios' ? `${Platform.OS}-done-all` : 'md-done-all',
       size: 25,
       color: 'white',
+    }
+    {
+      this.state.quoteRates &&
+        console.log(this.state.selected)
+      console.log(this.state.text)
+      console.log(quoteRates)
     }
     return (
       <View style={styles.container}>
@@ -112,8 +104,8 @@ class Home extends Component {
               checked={this.state.checked}
               title={item.code}
               subtitle={item.name}
-              onPress={() => this.changeBaseCurrency(item.code)}
-              rightComponentText={this.state.res}
+              onPress={() => this.setState({ selected: item.code })}
+              rightComponentText={item.code}
             />
           )}
           keyExtractor={item => item.code}

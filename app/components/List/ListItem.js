@@ -26,7 +26,8 @@ class ListItem extends Component {
     title: PropTypes.string,
     subtitle: PropTypes.string,
     onPress: PropTypes.func,
-    chevronColor: PropTypes.string
+    chevronColor: PropTypes.string,
+    rightComponentText:PropTypes.string
   }
 
   renderAvatar = (status, round) => {
