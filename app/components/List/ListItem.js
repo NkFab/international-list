@@ -27,7 +27,7 @@ class ListItem extends Component {
     subtitle: PropTypes.string,
     onPress: PropTypes.func,
     chevronColor: PropTypes.string,
-    rightComponentText:PropTypes.string
+    rightComponentText: PropTypes.string
   }
 
   renderAvatar = (status, round) => {
@@ -61,7 +61,7 @@ class ListItem extends Component {
         </TouchableOpacity>
         <View style={styles.right} >
           <Text style={styles.amount} >
-            {this.props.rightComponentText || this.state.value}
+            {this.props.rightComponentText ? this.props.rightComponentText.toString() : null}
           </Text>
         </View>
       </View>

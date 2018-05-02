@@ -1018,11 +1018,3 @@ export const currencies = [
     flag: '',
   },
 ]
-
-export const check = {
-  SGD: 1.619677,
-  SHP: 0.872153,
-  SLL: 9307.159721,
-  SOS: 687.973888,
-  SRD: 9.050673,
-}

@@ -9,12 +9,12 @@ import ActionButton from 'react-native-action-button';
 
 import { Separator } from '../components/List';
 import ListItem from '../components/List/ListItem';
-import { currencies, rates, check } from '../resources/data';
+import { currencies, rates } from '../resources/data';
 import { LastConverted } from '../components/Text';
 import styles from '../shared-styles';
 
 
-let quoteRates = [];
+let results = [];
 
 class Home extends Component {
   state = {
@@ -23,7 +23,7 @@ class Home extends Component {
       rates: {}
     },
     res: 23.65,
-    quoteRates: [],
+    results: [],
     date: null,
     text: null,
     selected: 'RWF',
@@ -50,18 +50,30 @@ class Home extends Component {
   };
 
   componentWillMount() {
-    this.setState({ currencies, check, rates });
+    this.setState({ rates });
   };
+
+
 
   convertCurrency = (base) => {
     const { rates } = this.state.rates
-    quoteRates = [];
+    // const { currencies } = this.state
+    results = [];
     if (this.state.text && this.state.rates) {
       Object.keys(rates).forEach((quote) => {
-        quoteRates.push((rates[quote] / rates[base]) * this.state.text)
+        results.push(
+          (rates[quote] / rates[base]) * this.state.text
+        )
       })
-      this.setState({ quoteRates })
+      for (let currency in currencies) {
+        currencies[currency].res = results[currency].toFixed(2)
+      }
     }
+    console.log(currencies)
+    this.setState({})
+  };
+
+  renderResults = () => {
   };
 
   render() {
@@ -70,12 +82,7 @@ class Home extends Component {
       size: 25,
       color: 'white',
     }
-    {
-      this.state.quoteRates &&
-        console.log(this.state.selected)
-      console.log(this.state.text)
-      console.log(quoteRates)
-    }
+    console.log(currencies)
     return (
       <View style={styles.container}>
 
@@ -97,7 +104,7 @@ class Home extends Component {
 
         <FlatList
           style={styles.list}
-          data={this.state.currencies}
+          data={currencies}
           renderItem={({ item }) => (
             <ListItem
               chevronColor='red'
@@ -105,7 +112,7 @@ class Home extends Component {
               title={item.code}
               subtitle={item.name}
               onPress={() => this.setState({ selected: item.code })}
-              rightComponentText={item.code}
+              rightComponentText={item.res}
             />
           )}
           keyExtractor={item => item.code}
