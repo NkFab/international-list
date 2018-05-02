@@ -45,7 +45,7 @@ class ListItem extends Component {
   render() {
     return (
       <View style={styles.parent}>
-        {this.renderAvatar(false, false)}
+        {this.renderAvatar(true, false)}
         <TouchableOpacity style={styles.center} onPress={this.props.onPress} >
           <View style={styles.titleContainer} >
             <Text style={styles.title}>
