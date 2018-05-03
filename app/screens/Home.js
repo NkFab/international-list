@@ -54,8 +54,6 @@ class Home extends Component {
     this.setState({ rates });
   };
 
-
-
   convertCurrency = (base) => {
     const { rates } = this.state.rates
     // const { currencies } = this.state
@@ -70,10 +68,23 @@ class Home extends Component {
         currencies[currency].res = results[currency].toFixed(2)
       }
     }
-    this.setState({})
+    this.setState({ date: rates.date })
   };
 
-  renderResults = () => {
+  renderItem = (item) => {
+    return (
+      <ListItem
+        title={item.code}
+        subtitle={item.name}
+        hideAvatar={false}
+        roundAvatar={false}
+        avatar={item.code === 'BTC' ? { uri: BTC }
+          : { uri: `${flagUrl}/${item.flag}.png` }
+        }
+        onPress={() => this.setState({ selected: item.code })}
+        rightComponentText={item.res}
+      />
+    );
   };
 
   render() {
@@ -105,17 +116,17 @@ class Home extends Component {
         <FlatList
           style={styles.list}
           data={currencies}
-          renderItem={({ item }) => (
-            <ListItem
-              chevronColor='red'
-              checked={this.state.checked}
-              title={item.code}
-              subtitle={item.name}
-              avatar={item.code==='BTC'?{uri:BTC}:{ uri: `${flagUrl}/${item.flag}.png` }}
-              onPress={() => this.setState({ selected: item.code })}
-              rightComponentText={item.res}
-            />
-          )}
+          renderItem={({ item }) => this.renderItem(item)}
+          //   <ListItem
+          //     title={item.code}
+          //     subtitle={item.name}
+          //     hideAvatar={true}
+          //     roundAvatar={false}
+          //     avatar={item.code === 'BTC' ? { uri: BTC } : { uri: `${flagUrl}/${item.flag}.png` }}
+          //     onPress={() => this.setState({ selected: item.code })}
+          //     rightComponentText={item.res}
+          //   />
+          // )}
           keyExtractor={item => item.code}
           ItemSeparatorComponent={this.renderSeparator}
           ListHeaderComponent={this.renderHeader}

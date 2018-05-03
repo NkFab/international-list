@@ -10,58 +10,57 @@ import { Separator, styles } from '.';
 
 class ListItem extends Component {
 
-  state = {
-    checked: false,
-    roundAvatar: false,
-    title: 'CAD',
-    value: 3998.2897,
-    subtitle: 'Canadian Dollar',
-    chevronColor: 'red'
-  }
   static propTypes = {
-    checked: PropTypes.bool,
     hideAvatar: PropTypes.bool,
     roundAvatar: PropTypes.bool,
     avatar: Image.propTypes.source,
     title: PropTypes.string,
     subtitle: PropTypes.string,
     onPress: PropTypes.func,
-    chevronColor: PropTypes.string,
     rightComponentText: PropTypes.string
   }
 
-  renderAvatar = (status, round, source) => {
+  renderAvatar = (hiden, round, source) => {
 
-    return status ? round ? //Show it round
-      <Image style={styles.leftRound} resizeMethod='resize'
-        source={source}
-      /> :  //Show it rectangular
-      <Image style={styles.leftRectangular} resizeMethod='resize'
-        source={source}
-      /> :  //Hide it
-      <Image style={styles.leftHide} resizeMode='center'
-        source={source}
-      />
-  }
+    if (!hiden) {
+      if (round) {
+        return (
+          <Image style={styles.leftRound} resizeMethod='resize' source={source} />
+        )
+      } else {
+        return (
+          <View style={styles.imageContainer}>
+            <Image style={styles.leftRectangular} resizeMethod='auto' source={source} />
+          </View>
+        )
+      }
+    } else { }
+  };
+
   render() {
     return (
       <View style={styles.parent}>
-        {this.renderAvatar(true, true, this.props.avatar)}
+        {this.renderAvatar(
+          this.props.hideAvatar,
+          this.props.roundAvatar, this.props.avatar
+        )}
         <TouchableOpacity style={styles.center} onPress={this.props.onPress} >
           <View style={styles.titleContainer} >
             <Text style={styles.title}>
-              {this.props.title || this.state.title}
+              {this.props.title}
             </Text>
           </View>
           <View style={styles.subTitleContainer} >
             <Text style={styles.subTitle}>
-              {this.props.subtitle || this.state.subtitle}
+              {this.props.subtitle}
             </Text>
           </View>
         </TouchableOpacity>
         <View style={styles.right} >
           <Text style={styles.amount} >
-            {this.props.rightComponentText ? this.props.rightComponentText.toString() : null}
+            {this.props.rightComponentText ? this.props.rightComponentText.toString()
+              : null
+            }
           </Text>
         </View>
       </View>

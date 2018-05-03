@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#2c3e50',
+    backgroundColor: 'gray',
   },
   parent: {
     width: '100%',
@@ -31,10 +31,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   leftRectangular: {
-    height: 50,
-    width: '14%',
-    marginLeft: 5,
-    justifyContent: 'center',
+    flex: 1,
   },
   center: {
     height: '100%',
@@ -73,6 +70,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: 'rgba(0,150,0,1)'
+  },
+  imageContainer: {
+    borderWidth: 1,
+    width: '15%',
+    marginLeft: 5,
+    marginVertical: 5,
+    justifyContent: 'center'
   },
   separator: {
     height: 1,
