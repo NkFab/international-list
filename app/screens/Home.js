@@ -9,12 +9,13 @@ import ActionButton from 'react-native-action-button';
 
 import { Separator } from '../components/List';
 import ListItem from '../components/List/ListItem';
-import { currencies, rates } from '../resources/data';
+import { currencies, rates, flagUrl } from '../resources/data';
 import { LastConverted } from '../components/Text';
 import styles from '../shared-styles';
 
 
 let results = [];
+const BTC = 'https://i.redditmedia.com/cMknl5zhfcxcTsudfkm-_IJTzjWoUWtg2MCkFVHZzqs.png?fit=crop&crop=faces%2Centropy&arh=2&w=960&s=7b9b29e713df4f5f2ea19e235653b161'
 
 class Home extends Component {
   state = {
@@ -69,7 +70,6 @@ class Home extends Component {
         currencies[currency].res = results[currency].toFixed(2)
       }
     }
-    console.log(currencies)
     this.setState({})
   };
 
@@ -111,6 +111,7 @@ class Home extends Component {
               checked={this.state.checked}
               title={item.code}
               subtitle={item.name}
+              avatar={item.code==='BTC'?{uri:BTC}:{ uri: `${flagUrl}/${item.flag}.png` }}
               onPress={() => this.setState({ selected: item.code })}
               rightComponentText={item.res}
             />

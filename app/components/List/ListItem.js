@@ -22,7 +22,7 @@ class ListItem extends Component {
     checked: PropTypes.bool,
     hideAvatar: PropTypes.bool,
     roundAvatar: PropTypes.bool,
-    avatar: PropTypes.func || PropTypes.string,
+    avatar: Image.propTypes.source,
     title: PropTypes.string,
     subtitle: PropTypes.string,
     onPress: PropTypes.func,
@@ -30,23 +30,23 @@ class ListItem extends Component {
     rightComponentText: PropTypes.string
   }
 
-  renderAvatar = (status, round) => {
+  renderAvatar = (status, round, source) => {
 
     return status ? round ? //Show it round
       <Image style={styles.leftRound} resizeMethod='resize'
-        source={require('../../resources/flag.png')}
+        source={source}
       /> :  //Show it rectangular
-      <Image style={styles.leftRectangular} resizeMode='center'
-        source={require('../../resources/flag.png')}
+      <Image style={styles.leftRectangular} resizeMethod='resize'
+        source={source}
       /> :  //Hide it
       <Image style={styles.leftHide} resizeMode='center'
-        source={require('../../resources/flag.png')}
+        source={source}
       />
   }
   render() {
     return (
       <View style={styles.parent}>
-        {this.renderAvatar(true, false)}
+        {this.renderAvatar(true, false, this.props.avatar)}
         <TouchableOpacity style={styles.center} onPress={this.props.onPress} >
           <View style={styles.titleContainer} >
             <Text style={styles.title}>
