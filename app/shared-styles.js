@@ -1,25 +1,30 @@
 import { StatusBar, StyleSheet } from 'react-native';
 
-const styles = StyleSheet.create({
+export const sharedSytles = {
+  backgroundColor: 'rgba(0, 190, 0,1)',
+}
+$backgroundColor = 'rgba(0, 190, 0,1)'
+
+export const styles = StyleSheet.create({
+
   container: {
     flex: 1,
-    paddingBottom: 50,
-    paddingVertical: StatusBar.currentHeight + 10,
+    paddingTop: StatusBar.currentHeight,
     alignContent: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#2c3e50',
+    backgroundColor: $backgroundColor,
   },
   inputContainer: {
     height: 48,
     flexDirection: 'row',
-    width: '95%',
+    width: '99%',
     paddingHorizontal: 8,
     backgroundColor: 'white',
   },
   input: {
     height: 47,
-    width: '95%',
+    width: '99%',
     paddingHorizontal: 8,
     backgroundColor: 'white',
     fontSize: 18,
@@ -36,18 +41,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'white',
   },
-  footer: {
-    paddingVertical: 20,
-    borderTopWidth: 1,
-    borderColor: "#CED0CE"
-  },
   separator: {
     height: '100%',
     width: StyleSheet.hairlineWidth,
     backgroundColor: "black",
   },
-  list: { width: '95%', marginTop: 2, backgroundColor: 'white' }
+  list: {
+    width: '99%',
+    marginTop: 2,
+    backgroundColor: 'white'
+  }
 });
-
-
-export default styles;

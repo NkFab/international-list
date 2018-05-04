@@ -1,12 +1,18 @@
-import EStyleSheet from 'react-native-extended-stylesheet';
+import { StyleSheet } from 'react-native';
 
-export default EStyleSheet.create({
-  smallText: {
+export default StyleSheet.create({
+  wrapper: {
+    height: 25,
+    width: '100%',
+    paddingHorizontal: 5,
+    // marginTop: 2,
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0,0.3)',
+  },
+  text: {
     color: 'white',
     textAlign: 'center',
-    textAlign: 'center',
-    fontSize: 18,
-    fontWeight: 600,
-    paddingTop: 20,
+    fontSize: 12,
+    fontWeight: '600',
   },
 });

@@ -21,7 +21,6 @@ class ListItem extends Component {
   }
 
   renderAvatar = (hiden, round, source) => {
-
     if (!hiden) {
       if (round) {
         return (

@@ -11,24 +11,27 @@ import { Separator } from '../components/List';
 import ListItem from '../components/List/ListItem';
 import { currencies, rates, flagUrl } from '../resources/data';
 import { LastConverted } from '../components/Text';
-import styles from '../shared-styles';
+import { styles, sharedSytles } from '../shared-styles';
 
 
 let results = [];
 const BTC = 'https://i.redditmedia.com/cMknl5zhfcxcTsudfkm-_IJTzjWoUWtg2MCkFVHZzqs.png?fit=crop&crop=faces%2Centropy&arh=2&w=960&s=7b9b29e713df4f5f2ea19e235653b161'
 
 class Home extends Component {
-  state = {
-    currencies: [],
-    rates: {
-      rates: {}
-    },
-    res: 23.65,
-    results: [],
-    date: null,
-    text: null,
-    selected: 'RWF',
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      currencies: [],
+      rates: {
+        rates: {}
+      },
+      res: 23.65,
+      results: [],
+      date: null,
+      text: null,
+      selected: 'RWF',
+    };
+  }
 
   renderSeparator = () => {
     return (
@@ -51,7 +54,7 @@ class Home extends Component {
   };
 
   componentWillMount() {
-    this.setState({ rates });
+    this.setState({ rates, date: rates.date });
   };
 
   convertCurrency = (base) => {
@@ -68,7 +71,7 @@ class Home extends Component {
         currencies[currency].res = results[currency].toFixed(2)
       }
     }
-    this.setState({ date: rates.date })
+    this.setState({})
   };
 
   renderItem = (item) => {
@@ -88,17 +91,15 @@ class Home extends Component {
   };
 
   render() {
-    let tasks = {
-      name: Platform.OS === 'ios' ? `${Platform.OS}-done-all` : 'md-done-all',
-      size: 25,
-      color: 'white',
+    const FAB = {
+      name: Platform.OS === 'ios' ? `${Platform.OS}-done-all`
+        : 'md-done-all', size: 25, color: 'white',
     }
-    console.log(currencies)
+    // console.log(rates.date)
     return (
       <View style={styles.container}>
 
         <StatusBar translucent={false} barStyle="default" />
-
         <View style={styles.inputContainer}>
           <View style={styles.buttonContainer}>
             <Text style={styles.buttonText}>{this.state.selected}</Text>
@@ -106,7 +107,9 @@ class Home extends Component {
           <View style={styles.separator} />
           <TextInput
             style={styles.input}
-            placeholder='enter amount...'
+            placeholder='Enter amount...'
+            enablesReturnKeyAutomatically
+
             onChangeText={(text) => this.setState({ text })}
             underlineColorAndroid='transparent'
             keyboardType='numeric'
@@ -117,26 +120,21 @@ class Home extends Component {
           style={styles.list}
           data={currencies}
           renderItem={({ item }) => this.renderItem(item)}
-          //   <ListItem
-          //     title={item.code}
-          //     subtitle={item.name}
-          //     hideAvatar={true}
-          //     roundAvatar={false}
-          //     avatar={item.code === 'BTC' ? { uri: BTC } : { uri: `${flagUrl}/${item.flag}.png` }}
-          //     onPress={() => this.setState({ selected: item.code })}
-          //     rightComponentText={item.res}
-          //   />
-          // )}
           keyExtractor={item => item.code}
           ItemSeparatorComponent={this.renderSeparator}
           ListHeaderComponent={this.renderHeader}
+          ListFooterComponent={this.renderFooter}
+          keyExtractor={(item) => item.code}
+          initialNumToRender={50}
         />
-
-        <ActionButton buttonColor="rgba(0, 152, 0,1)"
+        <LastConverted base={this.state.selected}
+          amount={this.state.text} lastUpdated={'2018-09-05'}
+        />
+        <ActionButton buttonColor={sharedSytles.backgroundColor}
           position='right' offsetX={10} offsetY={StatusBar.currentHeight + 60}
           active={this.state.fabActive}
           verticalOrientation="down"
-          renderIcon={() => <Ionicons {...tasks} />}
+          renderIcon={() => <Ionicons {...FAB} />}
           onPress={() => this.convertCurrency(this.state.selected)}
         />
 
