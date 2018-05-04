@@ -173,8 +173,7 @@ export const rates = {
     "ZMW": 11.818954,
     "ZWL": 386.796215
   }
-}
-
+};
 
 export const currencies = [
   {
@@ -1018,10 +1017,8 @@ export const currencies = [
     name: 'Zimbabwe Dollar',
     flag: 'ZW',
   },
-]
-
-// String.substr(0, 3);
+];
 
 export const flagUrl = 'http://www.geognos.com/api/en/countries/flag';
 
-// const flagApiUsage = `${flagUrl}/${currencies[index].flag}.png`
+export const BTC = 'https://www.bitcoincash.org/graphics/img/4-bitcoin-cash-logo-flag-small.png';

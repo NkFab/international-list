@@ -1,3 +1,3 @@
-import Home from './app/screens/Home';
+import International from './app/screens/International';
 
-export default Home;
+export default International;

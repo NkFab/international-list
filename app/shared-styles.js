@@ -3,17 +3,15 @@ import { StatusBar, StyleSheet } from 'react-native';
 export const sharedSytles = {
   backgroundColor: 'rgba(0, 190, 0,1)',
 }
-$backgroundColor = 'rgba(0, 190, 0,1)'
 
 export const styles = StyleSheet.create({
-
   container: {
     flex: 1,
     paddingTop: StatusBar.currentHeight,
     alignContent: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: $backgroundColor,
+    backgroundColor: sharedSytles.backgroundColor,
   },
   inputContainer: {
     height: 48,
