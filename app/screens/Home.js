@@ -25,19 +25,11 @@ class Home extends Component {
       rates: {
         rates: {}
       },
-      res: 23.65,
-      results: [],
-      date: null,
-      text: null,
-      selected: 'RWF',
+      baseCurrency: 'RWF',
     };
   }
 
-  renderSeparator = () => {
-    return (
-      <Separator />
-    );
-  };
+  renderSeparator = () => <Separator />
 
   renderHeader = () => {
     return <SearchBar placeholder="Type Here..." lightTheme round />;
@@ -54,24 +46,25 @@ class Home extends Component {
   };
 
   componentWillMount() {
-    this.setState({ rates, date: rates.date });
+    this.setState({ rates, currencies: currencies });
   };
 
   convertCurrency = (base) => {
     const { rates } = this.state.rates
     // const { currencies } = this.state
     results = [];
-    if (this.state.text && this.state.rates) {
+    if (this.state.rates) {
       Object.keys(rates).forEach((quote) => {
         results.push(
-          (rates[quote] / rates[base]) * this.state.text
+          // (rates[quote] / rates[base]) * this.state.text
+          (rates[quote] / rates[this.state.baseCurrency]) * base
         )
       })
       for (let currency in currencies) {
         currencies[currency].res = results[currency].toFixed(2)
       }
     }
-    this.setState({})
+    this.setState({ currencies: currencies })
   };
 
   renderItem = (item) => {
@@ -84,7 +77,7 @@ class Home extends Component {
         avatar={item.code === 'BTC' ? { uri: BTC }
           : { uri: `${flagUrl}/${item.flag}.png` }
         }
-        onPress={() => this.setState({ selected: item.code })}
+        onPress={() => this.setState({ baseCurrency: item.code })}
         rightComponentText={item.res}
       />
     );
@@ -95,14 +88,14 @@ class Home extends Component {
       name: Platform.OS === 'ios' ? `${Platform.OS}-done-all`
         : 'md-done-all', size: 25, color: 'white',
     }
-    // console.log(rates.date)
+    // console.log(this.state.currencies)
     return (
       <View style={styles.container}>
 
         <StatusBar translucent={false} barStyle="default" />
         <View style={styles.inputContainer}>
           <View style={styles.buttonContainer}>
-            <Text style={styles.buttonText}>{this.state.selected}</Text>
+            <Text style={styles.buttonText}>{this.state.baseCurrency}</Text>
           </View>
           <View style={styles.separator} />
           <TextInput
@@ -110,7 +103,7 @@ class Home extends Component {
             placeholder='Enter amount...'
             enablesReturnKeyAutomatically
 
-            onChangeText={(text) => this.setState({ text })}
+            onChangeText={(value) => this.convertCurrency(value)}
             underlineColorAndroid='transparent'
             keyboardType='numeric'
           />
@@ -118,24 +111,19 @@ class Home extends Component {
 
         <FlatList
           style={styles.list}
-          data={currencies}
+          data={this.state.currencies}
           renderItem={({ item }) => this.renderItem(item)}
           keyExtractor={item => item.code}
           ItemSeparatorComponent={this.renderSeparator}
           ListHeaderComponent={this.renderHeader}
-          ListFooterComponent={this.renderFooter}
+          keyboardShouldPersistTaps='never'
+          extraData={this.state}
+          // ListFooterComponent={this.renderFooter}
           keyExtractor={(item) => item.code}
-          initialNumToRender={50}
+          initialNumToRender={20}
         />
-        <LastConverted base={this.state.selected}
-          amount={this.state.text} lastUpdated={'2018-09-05'}
-        />
-        <ActionButton buttonColor={sharedSytles.backgroundColor}
-          position='right' offsetX={10} offsetY={StatusBar.currentHeight + 60}
-          active={this.state.fabActive}
-          verticalOrientation="down"
-          renderIcon={() => <Ionicons {...FAB} />}
-          onPress={() => this.convertCurrency(this.state.selected)}
+        <LastConverted base={this.state.baseCurrency}
+          amount={this.state.text} lastUpdated={rates.date}
         />
 
       </View>
