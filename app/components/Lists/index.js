@@ -6,9 +6,9 @@ import {
   StyleSheet, TouchableOpacity
 } from 'react-native';
 
-import { Separator, styles } from '.';
+import styles from './styles';
 
-class ListItem extends Component {
+export class ListItem extends Component {
 
   static propTypes = {
     hideAvatar: PropTypes.bool,
@@ -24,16 +24,20 @@ class ListItem extends Component {
     if (!hiden) {
       if (round) {
         return (
-          <Image style={styles.leftRound} resizeMethod='resize' source={source} />
+          <Image style={styles.leftRound}
+            flexWrap='wrap' source={source}
+          />
         )
       } else {
         return (
           <View style={styles.imageContainer}>
-            <Image style={styles.leftRectangular} resizeMethod='auto' source={source} />
+            <Image style={styles.leftRectangular}
+              resizeMode='stretch' source={source}
+            />
           </View>
         )
       }
-    } else { }
+    } else { return }
   };
 
   render() {
@@ -65,6 +69,9 @@ class ListItem extends Component {
       </View>
     );
   }
-}
+};
 
-export default ListItem;
+export const Separator = () => <View style={styles.separator} />
+
+
+

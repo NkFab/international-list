@@ -1019,6 +1019,78 @@ export const currencies = [
   },
 ];
 
+export const fewRates = {
+  "success": true,
+  "timestamp": 1525286104,
+  "base": "EUR",
+  "date": "2018-05-02",
+  "rates": {
+    "AED": 4.4069,
+    "AFN": 84.173518,
+    "ALL": 127.550177,
+    "AMD": 579.303383,
+    "ANG": 2.136109,
+    "AOA": 270.670353,
+    "ARS": 25.401728,
+    "AUD": 1.59492,
+    "AWG": 2.135835,
+    "AZN": 2.039245,
+  }
+}
+
+export const fewCurrencies = [
+  {
+    code: "AED",
+    name: 'UAE dirhams',
+    flag: 'AE',
+  },
+  {
+    code: "AFN",
+    name: 'Afghanistan Afghanis',
+    flag: 'AF',
+  },
+  {
+    code: "ALL",
+    name: 'Albanian lekë',
+    flag: 'AL',
+  },
+  {
+    code: "AMD",
+    name: 'Armenian drams',
+    flag: 'AM',
+  },
+  {
+    code: "ANG",
+    name: 'Netherlands Antillean Guilder',
+    flag: 'AN',
+  },
+  {
+    code: "AOA",
+    name: 'Angolan Kwanza',
+    flag: 'AO',
+  },
+  {
+    code: "ARS",
+    name: 'Argentine pesos',
+    flag: 'AR',
+  },
+  {
+    code: "AUD",
+    name: 'Australian dollars',
+    flag: 'AT',
+  },
+  {
+    code: "AWG",
+    name: 'Aruban Florin',
+    flag: 'AW',
+  },
+  {
+    code: "AZN",
+    name: 'Azerbaijani manats',
+    flag: 'AZ',
+  },
+]
+
 export const flagUrl = 'http://www.geognos.com/api/en/countries/flag';
 
 export const BTC = 'https://www.bitcoincash.org/graphics/img/4-bitcoin-cash-logo-flag-small.png';

@@ -5,7 +5,7 @@ import moment from 'moment';
 
 import styles from './styles';
 
-const LastConverted = ({ lastUpdated, base, amount }) => (
+export const LastConverted = ({ lastUpdated }) => (
   <View
     style={styles.wrapper}
   >
@@ -18,9 +18,5 @@ const LastConverted = ({ lastUpdated, base, amount }) => (
 
 LastConverted.propTypes = {
 
-  base: PropTypes.string,
-  quote: PropTypes.string,
-  conversionRate: PropTypes.number,
+  lastUpdated: PropTypes.string,
 };
-
-export default LastConverted;

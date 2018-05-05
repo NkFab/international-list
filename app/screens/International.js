@@ -2,17 +2,17 @@ import {
   View, Text, TextInput, FlatList, ActivityIndicator,
   StatusBar, StyleSheet, ScrollView, Platform
 } from 'react-native';
-
 import React, { Component } from 'react';
 import { SearchBar } from "react-native-elements";
-import { Ionicons, Entypo } from '@expo/vector-icons'
-import ActionButton from 'react-native-action-button';
 
-import { Separator } from '../components/List';
-import ListItem from '../components/List/ListItem';
-import { currencies, rates, flagUrl, BTC } from '../resources/data';
-import { LastConverted } from '../components/Text';
-import { styles, sharedSytles } from '../shared-styles';
+
+import { Separator, ListItem } from '../components/Lists';
+import { fewCurrencies, fewRates, flagUrl, BTC } from '../resources/data';
+import { LastConverted } from '../components/Texts';
+import { sharedSytles, styles } from '../shared-styles';
+import { InputWithLabel } from '../components/Inputs';
+import { Container } from '../components/Containers';
+import { Footer } from '../components/Elements'
 
 let results = [];
 
@@ -20,105 +20,81 @@ class International extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currencies: [],
-      rates: {
-        rates: {}
-      },
-      baseCurrency: 'RWF',
+      baseCurrency: fewCurrencies[0].code,
+      fewCurrencies,
+      fewRates
     };
   }
-
-  renderSeparator = () => <Separator />
 
   renderHeader = () => {
     return <SearchBar placeholder="Type Here..." lightTheme round />;
   };
 
-  renderFooter = () => {
-    return (
-      <View style={styles.footer}>
-        <ActivityIndicator animating size="large" />
-      </View>
-    );
-  };
-
   componentWillMount() {
-    this.setState({ rates, currencies: currencies });
+    this.convertCurrency();
   };
 
-  convertCurrency = (base) => {
-    const { rates } = this.state.rates
+  convertCurrency(amount = 1) {
+    const { rates } = this.state.fewRates
+    const { baseCurrency } = this.state
     results = [];
-    if (this.state.rates) {
-      Object.keys(rates).forEach((quote) => {
+    if (this.state.fewRates) {
+      Object.keys(rates).forEach((quoteCurrency) => {
         results.push(
-          // (rates[quote] / rates[base]) * this.state.text
-          (rates[quote] / rates[this.state.baseCurrency]) * base
+          (rates[quoteCurrency] / rates[baseCurrency]) * amount
         )
       })
-      for (let currency in currencies) {
-        currencies[currency].res = results[currency].toFixed(2)
+
+      for (let index in fewCurrencies) {
+        fewCurrencies[index].res = results[index].toFixed(2)
       }
     }
-    this.setState({ currencies: currencies })
-  };
-
-  renderItem = (item) => {
-    return (
-      <ListItem
-        title={item.code}
-        subtitle={item.name}
-        hideAvatar={false}
-        roundAvatar={false}
-        avatar={item.code === 'BTC' ? { uri: BTC }
-          : { uri: `${flagUrl}/${item.flag}.png` }
-        }
-        onPress={() => this.setState({ baseCurrency: item.code })}
-        rightComponentText={item.res}
-      />
-    );
+    this.setState({ fewCurrencies })
   };
 
   render() {
-    // console.log(this.state.currencies)
+    console.log(this.state.baseCurrency)
     return (
-      <View style={styles.container}>
+      <Container style={styles.container}>
 
         <StatusBar translucent={false} barStyle="default" />
-        <View style={styles.inputContainer}>
-          <View style={styles.buttonContainer}>
-            <Text style={styles.buttonText}>{this.state.baseCurrency}</Text>
-          </View>
-          <View style={styles.separator} />
-          <TextInput
-            style={styles.input}
-            placeholder='Enter amount...'
-            enablesReturnKeyAutomatically
-
-            onChangeText={(value) => this.convertCurrency(value)}
-            underlineColorAndroid='transparent'
-            keyboardType='numeric'
-          />
-        </View>
+        <InputWithLabel
+          placeholder='Enter amount...'
+          enablesReturnKeyAutomatically
+          defaultValue='1.00'
+          onChangeText={(value) => this.convertCurrency(value)}
+          underlineColorAndroid='transparent'
+          keyboardType='numeric'
+          LabelText={this.state.baseCurrency}
+        />
 
         <FlatList
           style={styles.list}
-          data={this.state.currencies}
-          renderItem={({ item }) => this.renderItem(item)}
+          data={this.state.fewCurrencies}
+          renderItem={({ item }) => (
+            <ListItem
+              title={item.code}
+              subtitle={item.name}
+              hideAvatar={false}
+              roundAvatar={false}
+              avatar={item.code === 'BTC' ? { uri: BTC }
+                : { uri: `${flagUrl}/${item.flag}.png` }}
+              onPress={() => this.setState({ baseCurrency: item.code })}
+              rightComponentText={item.res}
+            />
+          )}
           keyExtractor={item => item.code}
-          ItemSeparatorComponent={this.renderSeparator}
+          ItemSeparatorComponent={() => <Separator />}
           ListHeaderComponent={this.renderHeader}
           keyboardShouldPersistTaps='never'
           extraData={this.state}
-          // ListFooterComponent={this.renderFooter}
           keyExtractor={(item) => item.code}
           initialNumToRender={50}
+          onEndReachedThreshold={30}
         />
-        <LastConverted base={this.state.baseCurrency}
-          amount={this.state.text} lastUpdated={rates.date}
-        />
+        <LastConverted lastUpdated={fewRates.date} />
 
-      </View>
+      </Container>
     );
   }
 }
