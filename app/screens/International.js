@@ -14,13 +14,14 @@ import { InputWithLabel } from '../components/Inputs';
 import { Container } from '../components/Containers';
 import { Footer } from '../components/Elements'
 
-let results = [];
 
+let results = [];
 class International extends Component {
   constructor(props) {
     super(props);
     this.state = {
       baseCurrency: fewCurrencies[0].code,
+      userEntered: 1,
       fewCurrencies,
       fewRates
     };
@@ -31,38 +32,33 @@ class International extends Component {
   };
 
   componentWillMount() {
-    this.convertCurrency();
+    this.convertCurrency(this.state.userEntered, this.state.baseCurrency);
   };
 
-  convertCurrency(amount = 1) {
+  convertCurrency(userEntered, baseCurrency) {
+
     const { rates } = this.state.fewRates
-    const { baseCurrency } = this.state
     results = [];
     if (this.state.fewRates) {
       Object.keys(rates).forEach((quoteCurrency) => {
-        results.push(
-          (rates[quoteCurrency] / rates[baseCurrency]) * amount
-        )
+        results.push((rates[quoteCurrency] / rates[baseCurrency]) * userEntered);
       })
-
       for (let index in fewCurrencies) {
         fewCurrencies[index].res = results[index].toFixed(2)
       }
     }
-    this.setState({ fewCurrencies })
+    this.setState({ fewCurrencies, userEntered, baseCurrency })
   };
 
   render() {
-    console.log(this.state.baseCurrency)
     return (
       <Container style={styles.container}>
-
         <StatusBar translucent={false} barStyle="default" />
         <InputWithLabel
           placeholder='Enter amount...'
           enablesReturnKeyAutomatically
           defaultValue='1.00'
-          onChangeText={(value) => this.convertCurrency(value)}
+          onChangeText={(value) => this.convertCurrency(value, this.state.baseCurrency)}
           underlineColorAndroid='transparent'
           keyboardType='numeric'
           LabelText={this.state.baseCurrency}
@@ -79,12 +75,13 @@ class International extends Component {
               roundAvatar={false}
               avatar={item.code === 'BTC' ? { uri: BTC }
                 : { uri: `${flagUrl}/${item.flag}.png` }}
-              onPress={() => this.setState({ baseCurrency: item.code })}
+              onPress={() => this.convertCurrency(this.state.userEntered, item.code)}
               rightComponentText={item.res}
             />
           )}
           keyExtractor={item => item.code}
           ItemSeparatorComponent={() => <Separator />}
+          // ListFooterComponent={() => <Footer />}
           ListHeaderComponent={this.renderHeader}
           keyboardShouldPersistTaps='never'
           extraData={this.state}
@@ -93,7 +90,6 @@ class International extends Component {
           onEndReachedThreshold={30}
         />
         <LastConverted lastUpdated={fewRates.date} />
-
       </Container>
     );
   }

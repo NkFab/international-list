@@ -1023,7 +1023,7 @@ export const fewRates = {
   "success": true,
   "timestamp": 1525286104,
   "base": "EUR",
-  "date": "2018-05-02",
+  "date": "2018-05-06",
   "rates": {
     "AED": 4.4069,
     "AFN": 84.173518,

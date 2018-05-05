@@ -57,11 +57,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   title: {
+    marginTop: 2,
     fontWeight: '500',
     color: 'black',
     fontSize: 14
   },
   subTitle: {
+    marginBottom: 2,
     fontWeight: '500',
     color: 'gray',
     fontSize: 12
@@ -73,9 +75,9 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     borderWidth: 1,
-    width: '15%',
+    width: '16%',
     marginLeft: 5,
-    marginVertical: 5,
+    marginVertical: 4,
     justifyContent: 'center'
   },
   separator: {

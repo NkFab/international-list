@@ -16,7 +16,7 @@ export const InputWithLabel = (props) => {
         style={styles.input} {...props}
       />
     </View>
-  )
+  );
 };
 
 InputWithLabel.propTypes = {
