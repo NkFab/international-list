@@ -1,13 +1,12 @@
 import {
-  View, Text, TextInput, FlatList, ActivityIndicator,
-  StatusBar, StyleSheet, ScrollView, Platform
+  FlatList, ActivityIndicator, StatusBar, Platform
 } from 'react-native';
 import React, { Component } from 'react';
 import { SearchBar } from "react-native-elements";
 
 
 import { Separator, ListItem } from '../components/Lists';
-import { fewCurrencies, fewRates, flagUrl, BTC } from '../resources/data';
+import { currencies, rates, flagUrl, BTC } from '../resources/data';
 import { LastConverted } from '../components/Texts';
 import { sharedSytles, styles } from '../shared-styles';
 import { InputWithLabel } from '../components/Inputs';
@@ -20,12 +19,12 @@ class International extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      baseCurrency: fewCurrencies[0].code,
+      baseCurrency: currencies[0].code,
       userEntered: 1,
-      fewCurrencies,
-      fewRates
+      currencies,
+      rates
     };
-  }
+  };
 
   renderHeader = () => {
     return <SearchBar placeholder="Type Here..." lightTheme round />;
@@ -36,18 +35,17 @@ class International extends Component {
   };
 
   convertCurrency(userEntered, baseCurrency) {
-
-    const { rates } = this.state.fewRates
+    const { rates } = this.state.rates
     results = [];
-    if (this.state.fewRates) {
+    if (this.state.rates) {
       Object.keys(rates).forEach((quoteCurrency) => {
         results.push((rates[quoteCurrency] / rates[baseCurrency]) * userEntered);
       })
-      for (let index in fewCurrencies) {
-        fewCurrencies[index].res = results[index].toFixed(2)
+      for (let index in currencies) {
+        currencies[index].res = results[index].toFixed(2)
       }
     }
-    this.setState({ fewCurrencies, userEntered, baseCurrency })
+    this.setState({ currencies, userEntered, baseCurrency })
   };
 
   render() {
@@ -66,7 +64,7 @@ class International extends Component {
 
         <FlatList
           style={styles.list}
-          data={this.state.fewCurrencies}
+          data={this.state.currencies}
           renderItem={({ item }) => (
             <ListItem
               title={item.code}
@@ -89,10 +87,10 @@ class International extends Component {
           initialNumToRender={50}
           onEndReachedThreshold={30}
         />
-        <LastConverted lastUpdated={fewRates.date} />
+        <LastConverted lastUpdated={rates.date} />
       </Container>
     );
-  }
-}
+  };
+};
 
 export default International;
