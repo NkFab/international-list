@@ -1,12 +1,15 @@
 import {
-  FlatList, ActivityIndicator, StatusBar, Platform
+  FlatList, ActivityIndicator, StatusBar, Platform,
 } from 'react-native';
 import React, { Component } from 'react';
 import { SearchBar } from "react-native-elements";
 
+import {
+  currencies, rates, flagUrl, flagBTC,
+  flagXAG, flagXAU, flagXDR
+} from '../resources/data';
 
 import { Separator, ListItem } from '../components/Lists';
-import { currencies, rates, flagUrl, BTC } from '../resources/data';
 import { LastConverted } from '../components/Texts';
 import { sharedSytles, styles } from '../shared-styles';
 import { InputWithLabel } from '../components/Inputs';
@@ -20,10 +23,29 @@ class International extends Component {
     super(props);
     this.state = {
       baseCurrency: currencies[0].code,
-      userEntered: 1,
+      userEntered: 1.00,
       currencies,
       rates
     };
+  };
+
+  handleFlag = (currency) => {
+    if (currency.hasOwnProperty('flag')) {
+      return currency.flag ? `${flagUrl}/${currency.flag}.png` : null;
+    } else {
+      switch (currency.code) {
+        case 'BTC':
+          return flagBTC;
+        case 'XDR':
+          return flagXDR;
+        case 'XAU':
+          return flagXAU;
+        case 'XAG':
+          return flagXAG;
+        default:
+          return `${flagUrl}/${currency.code.substr(0, 2)}.png`;
+      }
+    }
   };
 
   renderHeader = () => {
@@ -55,7 +77,7 @@ class International extends Component {
         <InputWithLabel
           placeholder='Enter amount...'
           enablesReturnKeyAutomatically
-          defaultValue='1.00'
+          defaultValue={this.state.userEntered.toString()}
           onChangeText={(value) => this.convertCurrency(value, this.state.baseCurrency)}
           underlineColorAndroid='transparent'
           keyboardType='numeric'
@@ -71,15 +93,13 @@ class International extends Component {
               subtitle={item.name}
               hideAvatar={false}
               roundAvatar={false}
-              avatar={item.code === 'BTC' ? { uri: BTC }
-                : { uri: `${flagUrl}/${item.flag}.png` }}
+              avatar={{ uri: this.handleFlag(item) }}
               onPress={() => this.convertCurrency(this.state.userEntered, item.code)}
               rightComponentText={item.res}
             />
           )}
           keyExtractor={item => item.code}
           ItemSeparatorComponent={() => <Separator />}
-          // ListFooterComponent={() => <Footer />}
           ListHeaderComponent={this.renderHeader}
           keyboardShouldPersistTaps='never'
           extraData={this.state}
