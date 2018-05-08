@@ -15,7 +15,7 @@ import { sharedSytles, styles } from '../shared-styles';
 import { InputWithLabel } from '../components/Inputs';
 import { Container } from '../components/Containers';
 import { Footer } from '../components/Elements'
-
+import Listint from '../components/ListStuff/listint'
 
 let results = [];
 class International extends Component {
@@ -67,9 +67,17 @@ class International extends Component {
         currencies[index].res = results[index].toFixed(2)
       }
     }
-    this.setState({ currencies, userEntered, baseCurrency })
+    return this.setState({ currencies, userEntered, baseCurrency })
   };
-
+  _renderItem = ({item}) => (
+    <Listint 
+      code={item.code}
+      name={item.name}
+      res={item.res}
+      flag={this.handleFlag(item)}
+      onPress={()=> this.convertCurrency(this.state.userEntered, item.code)}
+    />
+  );
   render() {
     return (
       <Container style={styles.container}>
@@ -87,24 +95,15 @@ class International extends Component {
         <FlatList
           style={styles.list}
           data={this.state.currencies}
-          renderItem={({ item }) => (
-            <ListItem
-              title={item.code}
-              subtitle={item.name}
-              hideAvatar={false}
-              roundAvatar={false}
-              avatar={{ uri: this.handleFlag(item) }}
-              onPress={() => this.convertCurrency(this.state.userEntered, item.code)}
-              rightComponentText={item.res}
-            />
-          )}
+          renderItem={this._renderItem}
           keyExtractor={item => item.code}
           ItemSeparatorComponent={() => <Separator />}
           ListHeaderComponent={this.renderHeader}
+          ListFooterComponent={() => <Footer />}
           keyboardShouldPersistTaps='never'
           extraData={this.state}
           keyExtractor={(item) => item.code}
-          initialNumToRender={50}
+          initialNumToRender={10}
           onEndReachedThreshold={30}
         />
         <LastConverted lastUpdated={rates.date} />
